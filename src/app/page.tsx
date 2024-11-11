@@ -1,3 +1,4 @@
+import Post from "@/components/templates/post";
 import postsService from "@/services/posts";
 import { unstable_cache } from "next/cache";
 
@@ -10,9 +11,19 @@ const getPosts = unstable_cache(
 export default async function Home() {
   const postsData = await getPosts();
   return (
-    <main>
-      <div className="font-bold text-3xl">Hello world!</div>
-      {JSON.stringify(postsData)}
+    <main className="p-4">
+      <section className="grid grid-cols-2gap-4">
+        {postsData.map((post) => (
+          <Post key={post.id}>
+            <Post.Header>
+              <Post.Category>{post.tags?.[0].name}</Post.Category>
+              <Post.Date>{post.date}</Post.Date>
+            </Post.Header>
+            <Post.Title href={`/posts/${post.slug}`}>{post.title}</Post.Title>
+            <Post.Headline>{post.headline}</Post.Headline>
+          </Post>
+        ))}
+      </section>
     </main>
   );
 }
