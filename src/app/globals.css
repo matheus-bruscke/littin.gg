@@ -9,7 +9,7 @@
   }
 
   body {
-    color: white;
+    @apply text-neutral-50;
     background: black;
   }
 }
