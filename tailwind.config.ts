@@ -5,7 +5,13 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  theme: {},
+  theme: {
+    extend: {
+      gridTemplateColumns: {
+        "layout-desktop": "364px 1fr",
+      },
+    },
+  },
   plugins: [],
 };
 export default config;
