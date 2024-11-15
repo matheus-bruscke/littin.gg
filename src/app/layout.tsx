@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import Navigation from "@/components/layouts/navigation";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="">{children}</body>
+      <body className="container mx-auto my-0 flex flex-col gap-8 lg:grid lg:grid-cols-layout-desktop lg:gap-12">
+        <Navigation />
+        {children}
+      </body>
     </html>
   );
 }
