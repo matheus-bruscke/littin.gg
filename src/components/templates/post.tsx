@@ -2,34 +2,32 @@ import { cn } from "@/utils/cn";
 import Link, { type LinkProps } from "next/link";
 import React from "react";
 
-interface PostRootProps extends React.HTMLAttributes<HTMLElement> {}
-
-const PostRoot = React.forwardRef<HTMLElement, PostRootProps>(
-  ({ children, className, ...props }, ref) => {
-    return (
-      <article className={cn("flex flex-col gap-3", className)} {...props}>
-        {children}
-      </article>
-    );
-  }
-);
+const PostRoot = React.forwardRef<
+  HTMLElement,
+  React.HTMLAttributes<HTMLElement>
+>(({ children, className, ...props }, ref) => {
+  return (
+    <article className={cn("flex flex-col gap-3", className)} {...props}>
+      {children}
+    </article>
+  );
+});
 
 PostRoot.displayName = "Post";
 
-interface PostHeaderProps extends React.HTMLAttributes<HTMLElement> {}
-
-const PostHeader = React.forwardRef<HTMLElement, PostHeaderProps>(
-  ({ children, className, ...props }, ref) => {
-    return (
-      <header
-        className={cn("flex items-center justify-between", className)}
-        {...props}
-      >
-        {children}
-      </header>
-    );
-  }
-);
+const PostHeader = React.forwardRef<
+  HTMLElement,
+  React.HTMLAttributes<HTMLElement>
+>(({ children, className, ...props }, ref) => {
+  return (
+    <header
+      className={cn("flex items-center justify-between", className)}
+      {...props}
+    >
+      {children}
+    </header>
+  );
+});
 
 PostHeader.displayName = "PostHeader";
 
@@ -42,7 +40,10 @@ const PostTitle = React.forwardRef<HTMLAnchorElement, PostTitleProps>(
   ({ children, className, ...props }, ref) => {
     return (
       <Link
-        className={cn("font-bold text-3xl tracking-tight", className)}
+        className={cn(
+          "font-bold text-3xl tracking-tight hover:text-red-500",
+          className
+        )}
         {...props}
       >
         {children}
@@ -56,7 +57,7 @@ const PostDate = React.forwardRef<
   React.HTMLAttributes<HTMLElement>
 >(({ children, className, ...props }, ref) => {
   return (
-    <time className={cn("text-gray-500 text-sm", className)} {...props}>
+    <time className={cn("text-gray-200 text-sm", className)} {...props}>
       {typeof children === "string"
         ? new Date(children).toLocaleDateString("en-US", {
             month: "short",
@@ -86,7 +87,7 @@ const PostHeadline = React.forwardRef<
   React.HTMLAttributes<HTMLElement>
 >(({ children, className, ...props }, ref) => {
   return (
-    <h2 className={cn("font-medium text-neutral-500", className)} {...props}>
+    <h2 className={cn("font-medium text-neutral-300", className)} {...props}>
       {children}
     </h2>
   );

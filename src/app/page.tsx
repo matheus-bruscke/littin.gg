@@ -12,7 +12,7 @@ export default async function Home() {
   const postsData = await getPosts();
   return (
     <main className="p-4">
-      <section className="grid grid-cols-2gap-4">
+      <section className="grid grid-cols-2 gap-4">
         {postsData.map((post) => (
           <Post key={post.id}>
             <Post.Header>
