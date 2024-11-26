@@ -18,6 +18,7 @@ const postSchema = z.object({
   status: z.string(),
   headline: z.string(),
   tags: multiSelectSchema.optional(),
+  cover: z.string().optional(),
 });
 
 type Post = z.infer<typeof postSchema>;

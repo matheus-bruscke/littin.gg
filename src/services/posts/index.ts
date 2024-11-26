@@ -52,6 +52,8 @@ class PostsService {
       // @ts-ignore
       const properties = post.properties;
 
+      console.log(post);
+
       const santizedPostProperties = {
         title: this.getPropertyValue("title", properties.Name).text,
         date: this.getPropertyValue("date", properties["Publication Date"])
@@ -64,6 +66,8 @@ class PostsService {
       return postSchema.parse({
         ...santizedPostProperties,
         id: post.id,
+        cover:
+          (post as any).cover?.external?.url || (post as any).cover?.file?.url,
         slug: slugify(santizedPostProperties.title ?? ""),
       });
     });
