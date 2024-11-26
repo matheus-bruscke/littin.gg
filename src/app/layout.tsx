@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import "highlight.js/styles/dark.min.css";
 import "./globals.css";
 import Navigation from "@/components/layouts/navigation";
 
@@ -18,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="container mx-auto my-0 flex flex-col gap-8 lg:grid lg:grid-cols-layout-desktop lg:gap-12">
+      <body className="container mx-auto my-0 flex flex-col gap-8 lg:flex-row lg:gap-12">
         <Navigation />
         {children}
       </body>
