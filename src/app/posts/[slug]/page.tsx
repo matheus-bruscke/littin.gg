@@ -1,5 +1,7 @@
 import CodeBlock from "@/components/common/markdown/code-block";
 import postsService from "@/services/posts";
+import { cn } from "@/utils/cn";
+import getBase64 from "@/utils/get-base64";
 import { unstable_cache } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
@@ -48,7 +50,14 @@ export default async function Post({
   const { slug } = await params;
 
   const post = await getPostBySlug(slug);
-  // const post = await postsService.getPostBySlug(slug);
+
+  let blurredCover: string | undefined;
+
+  if (post.cover) {
+    blurredCover = await getBase64(post.cover);
+  }
+
+  console.log(post.cover);
 
   return (
     <React.Fragment>
@@ -65,12 +74,16 @@ export default async function Post({
               src={post.cover}
               alt={post.title}
               fill
-              style={{ objectFit: "cover" }}
+              placeholder="blur"
+              blurDataURL={blurredCover}
+              style={{ objectFit: "cover", opacity: 0.5 }}
+              priority
             />
+            <span className="absolute top-0 left-0 h-full w-full bg-gradient-to-b from-transparent to-black" />
           </figure>
         </div>
       )}
-      <main className="mt-96 w-full">
+      <main className={cn("mt-12 w-full", post.cover && "mt-96")}>
         <div className="max-w-[60rem]">
           <article className="mb-20 space-y-8">
             <h1 className="font-medium text-6xl leading-normal">
