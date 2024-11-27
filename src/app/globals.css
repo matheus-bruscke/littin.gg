@@ -11,7 +11,12 @@
   body {
     @apply text-neutral-50;
     background: black;
+    font-family: var(--font-body), Arial, Helvetica, sans-serif;
   }
+}
+
+code {
+  font-family: var(--font-mono);
 }
 
 .hljs {

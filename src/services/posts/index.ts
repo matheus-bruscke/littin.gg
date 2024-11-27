@@ -52,8 +52,6 @@ class PostsService {
       // @ts-ignore
       const properties = post.properties;
 
-      console.log(post);
-
       const santizedPostProperties = {
         title: this.getPropertyValue("title", properties.Name).text,
         date: this.getPropertyValue("date", properties["Publication Date"])
