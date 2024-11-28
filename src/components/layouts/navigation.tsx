@@ -39,7 +39,7 @@ const Navigation = () => {
   if (isDesktop && pathName.includes("/posts")) return null;
 
   return (
-    <Wrapper className="w-96">
+    <Wrapper className="mt-8 w-96">
       <nav className="flex flex-col gap-2">
         {SITE_ROUTES.map((route) => (
           <Link key={route.href} className={linkStyles} href={route.href}>

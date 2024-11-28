@@ -41,7 +41,7 @@ const PostTitle = React.forwardRef<HTMLAnchorElement, PostTitleProps>(
     return (
       <Link
         className={cn(
-          "font-bold text-3xl tracking-tight hover:text-red-500",
+          "font-medium text-3xl tracking-tight hover:text-red-500",
           className
         )}
         {...props}
@@ -57,7 +57,7 @@ const PostDate = React.forwardRef<
   React.HTMLAttributes<HTMLElement>
 >(({ children, className, ...props }, ref) => {
   return (
-    <time className={cn("text-gray-200 text-sm", className)} {...props}>
+    <time className={cn("text-gray-500 text-sm", className)} {...props}>
       {typeof children === "string"
         ? new Date(children).toLocaleDateString("en-US", {
             month: "short",
@@ -87,7 +87,7 @@ const PostHeadline = React.forwardRef<
   React.HTMLAttributes<HTMLElement>
 >(({ children, className, ...props }, ref) => {
   return (
-    <h2 className={cn("font-medium text-neutral-300", className)} {...props}>
+    <h2 className={cn("font-normal text-neutral-300", className)} {...props}>
       {children}
     </h2>
   );
