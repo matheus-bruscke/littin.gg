@@ -31,12 +31,17 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ children, ...props }) => {
   }, []);
 
   return (
-    <pre className={cn("relative my-4 rounded-lg bg-neutral-900")} {...props}>
+    <pre
+      className={cn(
+        "relative mb-8 border border-neutral-700 border-dashed bg-neutral-950"
+      )}
+      {...props}
+    >
       {children}
       <button
         onClick={handleCopy}
         type="button"
-        className="absolute top-0 right-2 p-2 text-neutral-500 text-sm transition-colors hover:text-red-500"
+        className="absolute top-0 right-2 p-2 font-sans text-neutral-500 text-sm transition-colors hover:text-red-500"
       >
         {isCopied ? "Copied!" : "Copy"}
       </button>
