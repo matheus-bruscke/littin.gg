@@ -2,17 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
 
   body {
-    @apply text-neutral-50;
-    background: black;
+    @apply text-neutral-200 bg-black;
     font-family: var(--font-body), Arial, Helvetica, sans-serif;
   }
+}
+
+::-moz-selection {
+  @apply bg-neutral-200 text-black;
+}
+
+::selection {
+  @apply bg-neutral-200 text-black;
 }
 
 code {
