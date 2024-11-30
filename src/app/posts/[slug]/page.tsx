@@ -1,7 +1,10 @@
 import CodeBlock from "@/components/common/markdown/code-block";
+import SectionAnchors from "@/components/modules/section-anchors";
+import { PostCategory, PostDate } from "@/components/templates/post";
 import postsService from "@/services/posts";
 import { cn } from "@/utils/cn";
 import getBase64 from "@/utils/get-base64";
+import { slugify } from "@/utils/slugfy";
 import { unstable_cache } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,19 +14,70 @@ import type { Options } from "react-markdown";
 import Markdown from "react-markdown";
 
 const components: Options["components"] = {
-  h1: (props) => <h1 {...props} />,
-  h2: (props) => <h2 {...props} />,
-  h3: (props) => (
-    <h3 className="mb-4 font-medium text-2xl leading-loose" {...props} />
+  h1: ({ children, ...props }) => (
+    <h1
+      id={slugify(String(children))}
+      className="mb-4 font-medium text-2xl leading-loose"
+      {...props}
+    >
+      {children}
+    </h1>
   ),
-  h4: (props) => <h4 {...props} />,
-  h5: (props) => <h5 {...props} />,
-  h6: (props) => <h6 {...props} />,
-  p: (props) => <p className="mb-8 text-xl leading-normal" {...props} />,
-  a: (props) => <a {...props} />,
-  ul: (props) => <ul className="mb-8 marker:text-red-500" {...props} />,
+  h2: ({ children, ...props }) => (
+    <h2
+      id={slugify(String(children))}
+      className="mb-4 font-medium text-2xl leading-loose"
+      {...props}
+    >
+      {children}
+    </h2>
+  ),
+  h3: ({ children, ...props }) => (
+    <h3
+      id={slugify(String(children))}
+      className="mb-4 font-medium text-2xl leading-loose"
+      {...props}
+    >
+      {children}
+    </h3>
+  ),
+  p: ({ children, ...props }) => {
+    const childrenString = String(children);
+
+    if (childrenString.startsWith("TL;DR")) {
+      return (
+        <div>
+          <span className="font-medium text-red-500">TL;DR</span>
+          <p
+            className="mb-20 border-red-500 border-l-2 pl-4 text-neutral-300 text-xl leading-normal"
+            {...props}
+          >
+            {childrenString.replace("TL;DR:", "")}
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <p
+        className="mb-12 font-light text-neutral-300 text-xl leading-normal"
+        {...props}
+      >
+        {children}
+      </p>
+    );
+  },
+  a: (props) => <a className="text-red-500 underline" {...props} />,
+  ul: (props) => <ul className="mb-12" {...props} />,
   ol: (props) => <ol {...props} />,
-  li: (props) => <li className="list-inside list-disc" {...props} />,
+  li: (props) => (
+    <li className="mb-6 flex items-start gap-4" {...props}>
+      <span className="h-2 w-2 bg-red-500" />
+      <p className="-mt-2 flex-1 font-light text-neutral-300 text-xl leading-normal">
+        {props.children}
+      </p>
+    </li>
+  ),
   strong: (props) => <strong {...props} />,
   em: (props) => <em {...props} />,
   code: (props) => (
@@ -34,7 +88,13 @@ const components: Options["components"] = {
   ),
   pre: (props) => <CodeBlock {...props} />,
   blockquote: (props) => <blockquote {...props} />,
-  img: (props) => <img className="rounded-md" {...props} alt={props.alt} />,
+  img: (props) => (
+    <img
+      className="border border-neutral-700 border-dashed shadow-inner"
+      {...props}
+      alt={props.alt}
+    />
+  ),
 };
 
 export default async function Post({
@@ -50,6 +110,7 @@ export default async function Post({
     { revalidate: 3600, tags: ["posts:slug"] }
   );
 
+  // const post = await postsService.getPostBySlug(slug);
   const post = await getPostBySlug();
 
   let blurredCover: string | undefined;
@@ -58,11 +119,16 @@ export default async function Post({
     const getCoverBase64 = unstable_cache(
       async () => getBase64(post.cover as string),
       [post.cover],
-      { revalidate: 3600, tags: ["posts:cover"] }
+      { revalidate: 10, tags: ["posts:cover"] }
     );
 
     blurredCover = await getCoverBase64();
   }
+
+  const postHeadings = post.content.match(/#.+/g)?.map((heading) => ({
+    id: slugify(heading),
+    title: heading.replace(/#/g, ""),
+  }));
 
   return (
     <React.Fragment>
@@ -90,7 +156,22 @@ export default async function Post({
         </div>
       )}
 
-      <main className={cn("mt-12 w-full", post.cover && "mt-96")}>
+      <section className="container absolute top-72 mx-auto flex w-full items-center justify-between">
+        <div className="flex flex-col">
+          {post.tags?.length && (
+            <PostCategory className="font-medium text-xl">
+              {post?.tags[0].name}
+            </PostCategory>
+          )}
+          <PostDate className="text-base">{post.date}</PostDate>
+        </div>
+
+        <code className="text-neutral-600 text-sm uppercase">
+          {post.id.split("-").slice(-1)}
+        </code>
+      </section>
+
+      <main className={cn("relative mt-12 w-full", post.cover && "mt-96")}>
         <div className="mx-auto max-w-[54rem]">
           <article className="mb-20 space-y-8">
             <h1 className="font-normal text-6xl leading-normal tracking-tight">
@@ -102,6 +183,11 @@ export default async function Post({
           </article>
           <Markdown components={components}>{post.content}</Markdown>
         </div>
+
+        <SectionAnchors
+          className="fixed top-[50vh] right-12 mt-12"
+          anchors={postHeadings ?? []}
+        />
       </main>
     </React.Fragment>
   );
