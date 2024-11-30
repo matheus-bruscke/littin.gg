@@ -62,6 +62,7 @@ const PostDate = React.forwardRef<
         ? new Date(children).toLocaleDateString("en-US", {
             month: "short",
             day: "numeric",
+            year: "numeric",
           })
         : children}
     </time>
