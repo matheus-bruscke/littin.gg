@@ -14,15 +14,18 @@ class PostsService {
   }
 
   public async getPostBySlug(slug: string) {
+    console.time("getPostBySlug");
     const databaseRAW = await notion.databases.query({
       database_id: process.env.NOTION_DATABASE_ID ?? "",
       filter: {
-        property: "Name",
-        title: {
-          contains: deslugify(slug),
+        property: "Slug",
+        rich_text: {
+          equals: slug,
         },
       },
     });
+
+    console.timeEnd("getPostBySlug");
 
     const santizedPosts = this.sanitizePosts(databaseRAW);
 
@@ -33,7 +36,6 @@ class PostsService {
     }
 
     const postContent = await this.getPostContent(post.id);
-
     return {
       ...post,
       content: postContent.parent,
@@ -41,8 +43,10 @@ class PostsService {
   }
 
   private async getPostContent(postId: string) {
+    console.time("getPostContent");
     const mdblocks = await n2m.pageToMarkdown(postId);
     const mdString = n2m.toMarkdownString(mdblocks);
+    console.timeEnd("getPostContent");
 
     return mdString;
   }
@@ -59,6 +63,7 @@ class PostsService {
         status: this.getPropertyValue("status", properties.Status).text,
         headline: this.getPropertyValue("rich_text", properties.Headline).text,
         tags: this.getPropertyValue("multi_select", properties.Tags).options,
+        slug: this.getPropertyValue("rich_text", properties.Slug).text,
       };
 
       return postSchema.parse({
@@ -66,7 +71,6 @@ class PostsService {
         id: post.id,
         cover:
           (post as any).cover?.external?.url || (post as any).cover?.file?.url,
-        slug: slugify(santizedPostProperties.title ?? ""),
       });
     });
   }
