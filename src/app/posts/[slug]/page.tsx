@@ -3,10 +3,8 @@ import SectionAnchors from "@/components/modules/section-anchors";
 import { PostCategory, PostDate } from "@/components/templates/post";
 import postsService from "@/services/posts";
 import { cn } from "@/utils/cn";
-import getBase64 from "@/utils/get-base64";
 import { slugify } from "@/utils/slugfy";
 import { unstable_cache } from "next/cache";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { MdArrowBack } from "react-icons/md";
@@ -110,20 +108,7 @@ export default async function Post({
     { revalidate: 3600, tags: ["posts:slug"] }
   );
 
-  // const post = await postsService.getPostBySlug(slug);
   const post = await getPostBySlug();
-
-  let blurredCover: string | undefined;
-
-  if (post.cover) {
-    const getCoverBase64 = unstable_cache(
-      async () => getBase64(post.cover as string),
-      [post.cover],
-      { revalidate: 10, tags: ["posts:cover"] }
-    );
-
-    blurredCover = await getCoverBase64();
-  }
 
   const postHeadings = post.content.match(/#.+/g)?.map((heading) => ({
     id: slugify(heading),
@@ -139,22 +124,6 @@ export default async function Post({
         <MdArrowBack className="mb-1" />
         Back to posts
       </Link>
-      {typeof post.cover === "string" && (
-        <div className="absolute top-0 left-0 h-80 w-full">
-          <figure className="relative h-60 w-full md:h-80">
-            <Image
-              src={post.cover}
-              alt={post.title}
-              fill
-              placeholder="blur"
-              blurDataURL={blurredCover}
-              style={{ objectFit: "cover", opacity: 0.5 }}
-              priority
-            />
-            <span className="absolute top-0 left-0 h-full w-full bg-gradient-to-b from-transparent to-black" />
-          </figure>
-        </div>
-      )}
 
       <section className="container absolute top-72 mx-auto flex w-full items-center justify-between">
         <div className="flex flex-col">
