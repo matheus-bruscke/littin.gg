@@ -2,8 +2,10 @@
 import useMedia, { MEDIA_QUERIES } from "@/hooks/use-media";
 import { SITE_ROUTES } from "@/metadata/site";
 import { cn } from "@/utils/cn";
+import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import React from "react";
 
 interface WrapperProps extends React.HTMLAttributes<HTMLElement> {}
 
@@ -39,15 +41,23 @@ const Navigation = () => {
   if (isDesktop && pathName.includes("/posts")) return null;
 
   return (
-    <Wrapper className="mt-8 w-96">
-      <nav className="flex flex-col gap-2">
-        {SITE_ROUTES.map((route) => (
-          <Link key={route.href} className={linkStyles} href={route.href}>
-            {route.name}
-          </Link>
-        ))}
-      </nav>
-    </Wrapper>
+    <React.Fragment>
+      <ProgressBar
+        height="2px"
+        color="#D63C3C"
+        options={{ showSpinner: false }}
+        shallowRouting
+      />
+      <Wrapper className="mt-8 w-96">
+        <nav className="flex flex-col gap-2">
+          {SITE_ROUTES.map((route) => (
+            <Link key={route.href} className={linkStyles} href={route.href}>
+              {route.name}
+            </Link>
+          ))}
+        </nav>
+      </Wrapper>
+    </React.Fragment>
   );
 };
 

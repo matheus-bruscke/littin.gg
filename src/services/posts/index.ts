@@ -1,5 +1,4 @@
 import notion, { n2m } from "@/lib/notion";
-import { deslugify, slugify } from "@/utils/slugfy";
 import type { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
 import { z } from "zod";
 import { multiSelectSchema, postSchema } from "./schemas";
@@ -14,7 +13,6 @@ class PostsService {
   }
 
   public async getPostBySlug(slug: string) {
-    console.time("getPostBySlug");
     const databaseRAW = await notion.databases.query({
       database_id: process.env.NOTION_DATABASE_ID ?? "",
       filter: {
@@ -24,8 +22,6 @@ class PostsService {
         },
       },
     });
-
-    console.timeEnd("getPostBySlug");
 
     const santizedPosts = this.sanitizePosts(databaseRAW);
 
@@ -43,10 +39,8 @@ class PostsService {
   }
 
   private async getPostContent(postId: string) {
-    console.time("getPostContent");
     const mdblocks = await n2m.pageToMarkdown(postId);
     const mdString = n2m.toMarkdownString(mdblocks);
-    console.timeEnd("getPostContent");
 
     return mdString;
   }

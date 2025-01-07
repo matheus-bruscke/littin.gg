@@ -4,6 +4,7 @@ import "./globals.css";
 import Navigation from "@/components/layouts/navigation";
 import { site_info } from "@/content/app-info";
 import { fragmentMono, helveticaNeue } from "@/content/fonts";
+import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 
 export const metadata: Metadata = {
   title: {
