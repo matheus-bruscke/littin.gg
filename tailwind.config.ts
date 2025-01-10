@@ -6,6 +6,15 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    container: {
+      screens: {
+        "xl": "1024px",
+      },
+      padding: {
+        DEFAULT: '1rem',
+        lg: '0rem'
+      }
+    },
     extend: {
       boxShadow: {
         "inner-lg": "inset 0 -2px 4px rgba(0, 0, 0, 0.6)",

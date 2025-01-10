@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         port: "",
       },
+      {
+        hostname: "www.notion.so",
+        protocol: "https",
+        port: "",
+      },
     ],
   },
 };
