@@ -3,7 +3,7 @@ import "highlight.js/styles/dark.min.css";
 import "./globals.css";
 import Navbar from "@/components/layouts/navbar";
 import { site_info } from "@/content/app-info";
-import { fragmentMono, helveticaNeue } from "@/content/fonts";
+import { aspekta, fragmentMono } from "@/content/fonts";
 
 export const metadata: Metadata = {
 	title: {
@@ -28,7 +28,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${helveticaNeue.variable} ${fragmentMono.variable} container relative mx-auto my-0 flex flex-col gap-8 lg:gap-12`}
+				className={`${aspekta.variable} ${fragmentMono.variable} container relative mx-auto my-0 flex flex-col gap-8 lg:gap-12`}
 			>
 				<Navbar />
 				{children}
