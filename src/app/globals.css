@@ -9,7 +9,7 @@
 
   body {
     @apply text-neutral-200 bg-black;
-    font-family: var(--font-body), Arial, Helvetica, sans-serif;
+    font-family: var(--font-aspekta), Arial, Helvetica, sans-serif;
   }
 }
 

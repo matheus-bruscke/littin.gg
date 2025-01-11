@@ -1,46 +1,5 @@
 import localFont from "next/font/local";
 
-const helveticaNeue = localFont({
-  variable: "--font-body",
-  src: [
-    {
-      path: "../../public/fonts/helvetica-neue/thin.otf",
-      weight: "100",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/helvetica-neue/light.otf",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/helvetica-neue/roman.otf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/helvetica-neue/medium.otf",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/helvetica-neue/bold.otf",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/helvetica-neue/heavy.otf",
-      weight: "800",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/helvetica-neue/black.otf",
-      weight: "900",
-      style: "normal",
-    },
-  ],
-});
-
 const fragmentMono = localFont({
   variable: "--font-mono",
   src: [
@@ -51,10 +10,41 @@ const fragmentMono = localFont({
     },
     {
       path: "../../public/fonts/fragment-mono/italic.ttf",
-      weight: "400",
+      weight: "400",  
       style: "italic",
     },
   ],
 });
 
-export { helveticaNeue, fragmentMono };
+const aspekta = localFont({
+  variable: "--font-aspekta",
+  src: [
+    {
+      path: "../../public/fonts/aspekta/light.otf",
+      weight: "100",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/aspekta/regular.otf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/aspekta/medium.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/aspekta/bold.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/aspekta/black.otf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+});
+
+export { fragmentMono, aspekta };
