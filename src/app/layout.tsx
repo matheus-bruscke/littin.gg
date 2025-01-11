@@ -28,7 +28,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${aspekta.variable} ${fragmentMono.variable} container relative mx-auto my-0 flex flex-col gap-8 lg:gap-12`}
+				className={`${aspekta.variable} ${fragmentMono.variable} relative mx-auto my-0 flex flex-col gap-8 lg:gap-12`}
 			>
 				<Navbar />
 				{children}

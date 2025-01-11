@@ -34,7 +34,7 @@ export function PostsTagsNav({ tags }: PostsTagsNavProps) {
 							router.replace(`/?${newSearchParams.toString()}`);
 						}}
 						className={cn(
-							"flex h-9 w-fit items-center justify-center rounded-full bg-red-500/10 px-3 text-red-500 text-sm",
+							"flex h-9 w-fit items-center justify-center rounded-full bg-red-500/15 px-3 text-red-500 text-sm",
 							isSelected && "bg-red-500 text-black",
 						)}
 					>

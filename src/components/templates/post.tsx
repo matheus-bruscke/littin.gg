@@ -7,7 +7,13 @@ const PostRoot = React.forwardRef<
 	React.HTMLAttributes<HTMLElement>
 >(({ children, className, ...props }, ref) => {
 	return (
-		<article className={cn("flex flex-col gap-3", className)} {...props}>
+		<article
+			className={cn(
+				"flex flex-col gap-3 border-neutral-800 border-b pb-8",
+				className,
+			)}
+			{...props}
+		>
 			{children}
 		</article>
 	);
@@ -57,7 +63,10 @@ const PostDate = React.forwardRef<
 	React.HTMLAttributes<HTMLElement>
 >(({ children, className, ...props }, ref) => {
 	return (
-		<time className={cn("text-gray-500 text-sm", className)} {...props}>
+		<time
+			className={cn("text-gray-500 text-xs uppercase", className)}
+			{...props}
+		>
 			{typeof children === "string"
 				? new Date(children).toLocaleDateString("en-US", {
 						month: "short",
@@ -75,7 +84,7 @@ const PostCategory = React.forwardRef<
 >(({ children, className, ...props }, ref) => {
 	return (
 		<span
-			className={cn("text-red-500 text-sm capitalize", className)}
+			className={cn("text-red-500 text-xs uppercase", className)}
 			{...props}
 		>
 			{children}
