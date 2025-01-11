@@ -1,21 +1,18 @@
 import CodeBlock from "@/components/common/markdown/code-block";
-import SectionAnchors from "@/components/modules/section-anchors";
 import { PostCategory, PostDate } from "@/components/templates/post";
 import postsService from "@/services/posts";
 import { cn } from "@/utils/cn";
 import getBase64 from "@/utils/get-base64";
 import { slugify } from "@/utils/slugfy";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
-import { MdArrowBack } from "react-icons/md";
 import Markdown, { type Options } from "react-markdown";
 
 const components: Options["components"] = {
 	h1: ({ children, ...props }) => (
 		<h1
 			id={slugify(String(children))}
-			className="mb-4 font-medium text-2xl leading-loose"
+			className="mb-3 font-medium text-2xl leading-relaxed"
 			{...props}
 		>
 			{children}
@@ -24,7 +21,7 @@ const components: Options["components"] = {
 	h2: ({ children, ...props }) => (
 		<h2
 			id={slugify(String(children))}
-			className="mb-4 font-medium text-2xl leading-loose"
+			className="mb-3 font-medium text-2xl leading-relaxed"
 			{...props}
 		>
 			{children}
@@ -33,7 +30,7 @@ const components: Options["components"] = {
 	h3: ({ children, ...props }) => (
 		<h3
 			id={slugify(String(children))}
-			className="mb-4 font-medium text-2xl leading-loose"
+			className="mb-3 font-medium text-2xl leading-relaxed"
 			{...props}
 		>
 			{children}
@@ -44,40 +41,49 @@ const components: Options["components"] = {
 
 		if (childrenString.startsWith("TL;DR")) {
 			return (
-				<div>
-					<span className="font-medium text-red-500">TL;DR</span>
-					<p
-						className="mb-20 border-red-500 border-l-2 pl-4 text-neutral-300 text-xl leading-normal"
-						{...props}
-					>
+				<section className="relative mb-12 rounded-lg border border-red-500 border-dashed bg-red-500/10 p-4 md:pl-28">
+					<img
+						src="/images/frieren-tldr.png"
+						className="md:-left-12 md:-bottom-2 float-right mt-4 mr-4 h-[20vh] md:absolute md:float-none md:mt-0 md:mr-0 md:h-[calc(100%+2rem)]"
+						alt="Frieren"
+					/>
+					<h2 className="font-bold text-lg text-red-500">
+						Frieren just cast "Too Long, Didn’t Read"
+					</h2>
+					<p className="font-light text-base text-neutral-300">
 						{childrenString.replace("TL;DR:", "")}
 					</p>
-				</div>
+				</section>
 			);
 		}
 
 		return (
 			<p
-				className="mb-12 font-light text-neutral-300 text-xl leading-normal"
+				className="mb-12 font-light text-lg text-neutral-400 leading-relaxed"
 				{...props}
 			>
 				{children}
 			</p>
 		);
 	},
-	a: (props) => <a className="text-red-500 underline" {...props} />,
+	a: (props) => (
+		<a
+			className="font-light text-red-500 underline-offset-4 hover:underline"
+			{...props}
+		/>
+	),
 	ul: (props) => <ul className="mb-12" {...props} />,
 	ol: (props) => <ol {...props} />,
 	li: (props) => (
 		<li className="mb-6 flex items-start gap-4" {...props}>
-			<span className="h-2 w-2 bg-red-500" />
-			<p className="-mt-2 flex-1 font-light text-neutral-300 text-xl leading-normal">
+			<span className="mt-1 h-px w-4 bg-red-500" />
+			<p className="-mt-2 flex-1 font-light text-lg text-neutral-300 leading-relaxed">
 				{props.children}
 			</p>
 		</li>
 	),
-	strong: (props) => <strong {...props} />,
-	em: (props) => <em {...props} />,
+	strong: (props) => <strong className="font-medium text-red-300" {...props} />,
+	em: (props) => <em className="font-serif " {...props} />,
 	code: (props) => (
 		<code
 			className="rounded-md bg-neutral-900 p-1 font-light text-base text-red-400"
@@ -86,13 +92,7 @@ const components: Options["components"] = {
 	),
 	pre: (props) => <CodeBlock {...props} />,
 	blockquote: (props) => <blockquote {...props} />,
-	img: (props) => (
-		<img
-			className="border border-neutral-700 border-dashed shadow-inner"
-			{...props}
-			alt={props.alt}
-		/>
-	),
+	img: (props) => <img className="rounded-lg" {...props} alt={props.alt} />,
 };
 
 export async function generateStaticParams() {
@@ -117,11 +117,6 @@ export default async function Post({
 		blurredCover = await getBase64(post.cover as string);
 	}
 
-	const postHeadings = post.content.match(/#.+/g)?.map((heading) => ({
-		id: slugify(heading),
-		title: heading.replace(/#/g, ""),
-	}));
-
 	return (
 		<React.Fragment>
 			{typeof post.cover === "string" && (
@@ -140,38 +135,30 @@ export default async function Post({
 					</figure>
 				</div>
 			)}
-			<section className="absolute top-72 mx-auto flex w-full items-center justify-between">
-				<div className="flex flex-col">
-					{post.tags?.length && (
-						<PostCategory className="font-medium text-xl">
-							{post?.tags[0].name}
-						</PostCategory>
-					)}
-					<PostDate className="text-base">{post.date}</PostDate>
-				</div>
-
-				<code className="text-neutral-600 text-sm uppercase">
-					{post.id.split("-").slice(-1)}
-				</code>
-			</section>
-
-			<main className={cn("relative mt-12 w-full", post.cover && "mt-96")}>
-				<div className="mx-auto max-w-[54rem] ">
-					<article className="mb-20 space-y-8">
-						<h1 className="font-normal text-6xl leading-normal tracking-tight">
+			<main className={cn("relative mt-0 w-full", post.cover && "mt-4")}>
+				<div className="mx-auto">
+					<article className="container mb-20 flex flex-col gap-2 md:mx-auto md:items-center">
+						<div className="flex items-center gap-3 text-neutral-300 text-sm uppercase">
+							<PostCategory className="uppercase">
+								{post.tags?.[0].name}
+							</PostCategory>
+							<strong className="text-[4px]">●</strong>
+							<PostDate className="text-neutral-300">{post.date}</PostDate>
+						</div>
+						<h1 className="font-normal text-4xl leading-normal tracking-tight md:text-center md:text-5xl">
 							{post.title}
 						</h1>
-						<h3 className="text-2xl text-neutral-400 leading-normal">
-							{post.headline}
-						</h3>
 					</article>
-					<Markdown components={components}>{post.content}</Markdown>
-				</div>
 
-				<SectionAnchors
-					className="fixed top-[50vh] right-12 mt-12"
-					anchors={postHeadings ?? []}
-				/>
+					<section className="container mx-auto max-w-screen-md">
+						<div className="relative">
+							<h3 className="mb-12 font-serif text-2xl text-neutral-300 leading-normal">
+								{post.headline}
+							</h3>
+						</div>
+						<Markdown components={components}>{post.content}</Markdown>
+					</section>
+				</div>
 			</main>
 		</React.Fragment>
 	);
